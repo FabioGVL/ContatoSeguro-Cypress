@@ -20,7 +20,6 @@ jobs:
         run: |
           cd Ambiente
           docker compose up --build -d
-          sleep 200
           docker compose ps
 
       - name: Configurar Node.js
@@ -28,11 +27,23 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Verificar ambiente
+      - name: Aguardar aplicação
         run: |
+          for i in {1..30}; do
+            if curl --fail --silent http://localhost:5400 > /dev/null; then
+              echo "Aplicação disponível."
+              exit 0
+            fi
+
+            echo "Aguardando aplicação... tentativa $i/30"
+            sleep 10
+          done
+
+          echo "Aplicação não ficou disponível."
           cd Ambiente
-          sleep 60
           docker compose ps
+          docker compose logs
+          exit 1
 
       - name: Executar testes Cypress
         uses: cypress-io/github-action@v5
