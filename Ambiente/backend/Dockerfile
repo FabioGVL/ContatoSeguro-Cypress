@@ -21,6 +21,7 @@ RUN buildDeps=" \
         libpng-dev \
         libxml2-dev \
     " \
+    && rm -rf /var/lib/apt/lists/* \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y $buildDeps $runtimeDeps \
     && docker-php-ext-install gd iconv mysqli pdo pdo_mysql xml zip \
