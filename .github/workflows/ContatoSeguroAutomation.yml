@@ -48,17 +48,27 @@ jobs:
         continue-on-error: true
         uses: cypress-io/github-action@v5
 
-      - name: Publicar relatório dos testes
+      - name: Publicar evidências dos testes
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: relatorio-testes-contato-seguro
+          name: contato-seguro-test-results
           path: |
             cypress/reports/**
             cypress/screenshots/**
             cypress/videos/**
           if-no-files-found: warn
           retention-days: 30
+
+      - name: Resumo da execução
+        if: always()
+        run: |
+          echo "### Contato Seguro - Execução dos testes" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Resultado Cypress: ${{ steps.cypress.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "A suíte pertence a um projeto histórico de teste técnico." >> $GITHUB_STEP_SUMMARY
+          echo "Falhas funcionais são mantidas no relatório e não bloqueiam este workflow." >> $GITHUB_STEP_SUMMARY
 
       - name: Encerrar ambiente Docker
         if: always()
