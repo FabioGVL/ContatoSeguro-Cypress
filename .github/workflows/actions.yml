@@ -10,38 +10,35 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
 
-      - name: Start Docker services with build
+      - name: Iniciar ambiente Docker
         run: |
           cd Ambiente
-          docker-compose up --build -d
+          docker compose up --build -d
           sleep 200
-          docker-compose ps
+          docker compose ps
 
-      - name: Return to project root
-        run: |
-          cd ..
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '16'
 
-      - name: Status Ambiente
+      - name: Verificar ambiente
         run: |
           cd Ambiente
           sleep 60
-          docker-compose ps
+          docker compose ps
 
-      - name: Cypress run
+      - name: Executar testes Cypress
         uses: cypress-io/github-action@v5
 
-      - name: Stop Docker services
+      - name: Encerrar ambiente Docker
+        if: always()
         run: |
           cd Ambiente
-          docker-compose down
+          docker compose down
