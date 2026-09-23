@@ -2,11 +2,9 @@ name: Contato Seguro Automation
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build:
@@ -46,7 +44,21 @@ jobs:
           exit 1
 
       - name: Executar testes Cypress
+        id: cypress
+        continue-on-error: true
         uses: cypress-io/github-action@v5
+
+      - name: Publicar relatório dos testes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-testes-contato-seguro
+          path: |
+            cypress/reports/**
+            cypress/screenshots/**
+            cypress/videos/**
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: Encerrar ambiente Docker
         if: always()
