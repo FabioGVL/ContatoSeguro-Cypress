@@ -1,4 +1,4 @@
-name: End-to-End Tests with Cypress
+name: Contato Seguro Automation
 
 on:
   push:
