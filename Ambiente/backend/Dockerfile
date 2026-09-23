@@ -30,6 +30,7 @@ RUN buildDeps=" \
     && docker-php-ext-enable memcached.so \
     && apt-get purge -y --auto-remove $buildDeps \
     && rm -r /var/lib/apt/lists/* \
+    && sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf \
     && a2enmod rewrite \
     && a2enmod headers \
     && a2enmod deflate \
