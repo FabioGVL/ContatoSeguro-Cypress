@@ -266,7 +266,7 @@ describe('Testes de UI/FrontEnd cadastro Contato Seguro', () => {
 
         cy.get(elem.novoUsuario).click()
         cy.get(elem.campoNome).type(elem.nome)
-        cy.get(elem.campoEmail).type(elem.Empresa123email)
+        cy.get(elem.campoEmail).type(elem.email)
         cy.get(elem.campoTelefone).type(elem.telefone)
         cy.get(elem.campoCidade).type(elem.caracteresEspeciais)
         cy.get(elem.campoData).type(elem.data)
